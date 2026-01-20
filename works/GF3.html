@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>调性折线图</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            background-color: #f0f0f0;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        // 获取 Canvas 和绘图上下文
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // 调性到半音数的映射（以 B♭ 为 0）
+        const keyToSemitone = {
+            'B♭': 0, 'B': 1, 'C': 2, 'C♯': 3, 'D♭': 3, 'D': 4,
+            'D♯': 5, 'E♭': 5, 'E': 6, 'F': 7, 'F♯': 8, 'G♭': 8,
+            'G': 9, 'G♯': 10, 'A♭': 10, 'A': 11, 'A♯': 0
+        };
+
+        // 示例调性序列
+        const keySequence = "G-G-G-G-G-G-G-G-G-G-G-G-G-C-C-C-F-F-F-F-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-B♭-B♭-B♭-B♭-B♭-B♭-G-G-G-G-G-C-C-C-C-C-C-F-F-F-F-F-F-F-F-D-D-D-D-F-F-F-F-F-F-F-F-F-F-F-F-F-F-F-F-B♭-B♭-B♭-B♭-F-F-F-F-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-B♭-B♭-F-F-B♭-B♭-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-G♭-G♭-G♭-G♭-G♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-F-F-F-F-F-F-F-F-F-F-F-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-C-C-C-C-C-C-F-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-E♭-E♭-A♭-A♭-A♭-D♭-D♭-D♭-G♭-G♭-G♭-B-B-B-E-E-E-A-A-A-D-D-D-G-G-G-C-C-C-F-F-D♭-D♭-C-C-C-C-C-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-B-B-B-B-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-G-G-G-G-G-G-G-G-C-C-C-C-F-F-F-F-A-A-A-A-E-E-E-E-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭".split('-');
+		//G-G-G-G-G-G-G-G-G-G-G-G-G-C-C-C-f-f-f-f-f-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-B♭-B♭-B♭-B♭-B♭-B♭-G-G-G-G-G-c-c-c-c-c-c-F-F-F-F-F-F-F-F-d-d-d-d-f-f-f-f-f-f-f-f-f-f-f-f-f-f-f-f-B♭-B♭-B♭-B♭-F-F-F-F-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-B♭-B♭-F-F-B♭-B♭-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-G♭-G♭-G♭-G♭-G♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-F-F-F-F-F-F-F-F-F-F-F-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-C-C-C-C-C-C-F-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-E♭-E♭-A♭-A♭-A♭-D♭-D♭-D♭-G♭-G♭-G♭-B-B-B-E-E-E-A-A-A-D-D-D-G-G-G-C-C-C-F-F-D♭-D♭-C-C-C-C-C-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-b-b-b-b-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-g-g-g-g-g-g-g-g-c-c-c-c-F-F-F-F-a-a-a-a-E-E-E-E-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭
+
+        // 处理调性，转换为半音数
+        function getSemitone(key) {
+            let root = key[0].toUpperCase() + (key[1] || '');
+            return keyToSemitone[root] !== undefined ? keyToSemitone[root] : 0;
+        }
+
+        // 计算折线路径
+        let x = 0, y = 0, totalAngle = 0, changeCount = 0;
+        let minX = 0, maxX = 0, minY = 0, maxY = 0;
+        const length = 8; // 每小节长度（像素）
+        const path = [{ x: 0, y: 0 }]; // 存储路径点
+
+        let currentKey = keySequence[0];
+        let count = 0; // 连续相同调性计数
+
+        for (let i = 0; i < keySequence.length; i++) {
+            const key = keySequence[i];
+            if (key === currentKey) {
+                count++; // 调性相同，计数增加
+            } else {
+                // 调性变化，绘制前一段
+                const angleRad = (totalAngle * Math.PI) / 180;
+                const segmentLength = count * length;
+                x += segmentLength * Math.cos(angleRad);
+                y += segmentLength * Math.sin(angleRad);
+                path.push({ x, y });
+                minX = Math.min(minX, x);
+                maxX = Math.max(maxX, x);
+                minY = Math.min(minY, y);
+                maxY = Math.max(maxY, y);
+
+                // 更新角度
+                changeCount++;
+                const semitone = getSemitone(key);
+                totalAngle = (semitone * 15) + (changeCount * 180);
+                currentKey = key;
+                count = 1;
+            }
+        }
+
+        // 绘制最后一个连续段
+        const angleRad = (totalAngle * Math.PI) / 180;
+        const segmentLength = count * length;
+        x += segmentLength * Math.cos(angleRad);
+        y += segmentLength * Math.sin(angleRad);
+        path.push({ x, y });
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y);
+        maxY = Math.max(maxY, y);
+
+        // 设置 Canvas 尺寸
+        canvas.width = Math.ceil(maxX - minX) + 20;
+        canvas.height = Math.ceil(maxY - minY) + 20;
+        ctx.translate(-minX + 10, -minY + 10); // 平移居中
+
+        // 绘制折线
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
+        for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+        }
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'blue';
+        ctx.stroke();
+    </script>
+</body>
+</html>

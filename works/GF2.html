@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>调性折线图</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            background-color: #f0f0f0;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        // 获取 Canvas 和绘图上下文
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // 调性到半音数的映射（以 B♭ 为 0）
+        const keyToSemitone = {
+            'B♭': 0,
+            'B': 1,
+            'C': 2,
+            'C♯': 3,
+            'D♭': 3,
+            'D': 4,
+            'D♯': 5,
+            'E♭': 5,
+            'E': 6,
+            'F': 7,
+            'F♯': 8,
+            'G♭': 8,
+            'G': 9,
+            'G♯': 10,
+            'A♭': 10,
+            'A': 11,
+            'A♯': 0
+        };
+
+        // 完整调性序列（741 个小节）
+        const keySequence = "G-G-G-G-G-G-G-G-G-G-G-G-G-C-C-C-f-f-f-f-f-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-B♭-B♭-B♭-B♭-B♭-B♭-G-G-G-G-G-c-c-c-c-c-c-F-F-F-F-F-F-F-F-d-d-d-d-f-f-f-f-f-f-f-f-f-f-f-f-f-f-f-f-B♭-B♭-B♭-B♭-F-F-F-F-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-B♭-B♭-F-F-B♭-B♭-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-G♭-G♭-G♭-G♭-G♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-D♭-F-F-F-F-F-F-F-F-F-F-F-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-C-C-C-C-C-C-F-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-E♭-E♭-A♭-A♭-A♭-D♭-D♭-D♭-G♭-G♭-G♭-B-B-B-E-E-E-A-A-A-D-D-D-G-G-G-C-C-C-F-F-D♭-D♭-C-C-C-C-C-F-F-F-F-F-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-G♭-b-b-b-b-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-A♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-g-g-g-g-g-g-g-g-c-c-c-c-F-F-F-F-a-a-a-a-E-E-E-E-F-F-F-F-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-E♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭-B♭".split('-');
+
+        // 处理调性，转换为半音数
+        function getSemitone(key) {
+            let root = key[0].toUpperCase() + (key[1] || '');
+            if (root in keyToSemitone) {
+                return keyToSemitone[root];
+            } else {
+                console.warn(`未知调性: ${key}，默认使用 B♭`);
+                return 0; // 默认 B♭
+            }
+        }
+
+        // 计算折线的尺寸
+        let x = 0;
+        let y = 0;
+        let totalAngle = 0; // 累积角度
+        let minX = 0;
+        let maxX = 0;
+        let minY = 0;
+        let maxY = 0;
+        const length = 100; // 进一步缩小折线段长度
+
+        keySequence.forEach((key, index) => {
+            if (index > 0) { // 从第二个调性开始计算角度变化
+                const semitone = getSemitone(key);
+                const angleIncrement = 180 + semitone * 15; // 固定增量 180 度 + 半音数影响
+                totalAngle += angleIncrement;
+                const angleRad = (totalAngle * Math.PI) / 180;
+                x += length * Math.cos(angleRad);
+                y += length * Math.sin(angleRad);
+                minX = Math.min(minX, x);
+                maxX = Math.max(maxX, x);
+                minY = Math.min(minY, y);
+                maxY = Math.max(maxY, y);
+            }
+        });
+
+        // 设置 Canvas 尺寸
+        const width = Math.ceil(maxX - minX) + 20; // 加 20 像素边距
+        const height = Math.ceil(maxY - minY) + 20;
+        canvas.width = width;
+        canvas.height = height;
+
+        // 将绘制原点平移到 Canvas 的适当位置
+        ctx.translate(-minX + 10, -minY + 10);
+
+        // 开始绘制折线
+        x = 0;
+        y = 0;
+        totalAngle = 0;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+
+        keySequence.forEach((key, index) => {
+            if (index > 0) { // 从第二个调性开始绘制
+                const semitone = getSemitone(key);
+                const angleIncrement = 180 + semitone * 15;
+                totalAngle += angleIncrement;
+                const angleRad = (totalAngle * Math.PI) / 180;
+                x += length * Math.cos(angleRad);
+                y += length * Math.sin(angleRad);
+                ctx.lineTo(x, y);
+            }
+        });
+
+        // 设置折线样式并绘制
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'blue';
+        ctx.stroke();
+    </script>
+</body>
+</html>

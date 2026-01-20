@@ -1,0 +1,87 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.board1{
+	width:500px;
+	padding-right:600px;
+	height:400px;
+	margin-top:50px;
+	cursor:url("../works/elements/cursor.cur"),pointer;
+}
+.board2{
+	width:700px;
+	padding-right:300px;
+	height:400px;
+	margin-top:50px;
+	cursor:url("../works/elements/cursor.cur"),pointer;
+}
+.dot1{width:100%;height:600px;margin-left:200px;}
+.dot2{width:100%;height:600px;margin-left:120px;}
+.steplight{width:100%;height:50px;}
+
+.dot1 div{
+	height:80px;
+	width:80px;
+	border-radius:40px;
+	border:2px solid;
+	border-color:grey;
+	margin-right:80px;
+	margin-bottom:80px;
+	float:left;
+}
+
+.dot2 div{
+	height:80px;
+	width:80px;
+	border-radius:40px;
+	border:2px solid;
+	border-color:grey;
+	margin-right:80px;
+	margin-bottom:80px;
+	float:left;
+}
+
+.qs{
+	width:70px;
+	height:70px;
+	margin-right:6px;
+	margin-left:6px;
+	display:inline-block;
+	float:left;
+}
+
+.qs div{
+	height:8px;
+	width:8px;
+	border-radius:8px;
+	border:2px solid;
+	border-color:grey;
+	margin-right:8px;
+	margin-bottom:8px;
+	float:left;
+}
+
+.library{
+	height:70px;
+	width:100%;
+  overflow-x:hidden;
+	overflow-y:scroll;
+  white-space: nowrap;
+-ms-overflow-style: none; /* hide scrollbar on IE and Edge */
+  scrollbar-width: none; /* hide scrollbar on Firefox */
+}
+.library::-webkit-scrollbar {
+  display: none; /* hide scrollbar on Chrome, Safari, and Opera */
+}
+
+.steplight{margin-left: 240px;}
+.steplight div{
+	height:4px;
+	width:4px;
+	border-radius:2px;
+	background-color:grey;
+	margin-right:37px;
+	margin-bottom:40px;
+	float:left;
+}

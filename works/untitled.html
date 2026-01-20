@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>3x3 Dots Field</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="150" height="150"></canvas>
+    <script>
+      const canvas = document.getElementById("canvas");
+      const context = canvas.getContext("2d");
+      const dotRadius = 5;
+      const dotSpacing = 50;
+      const xStart = 25;
+      const yStart = 25;
+      let dotStates = [
+        [true, true, true],
+        [true, true, true],
+        [true, true, true]
+      ];
+      
+      function drawDots() {
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            const x = xStart + i * dotSpacing;
+            const y = yStart + j * dotSpacing;
+            context.beginPath();
+            context.arc(x, y, dotRadius, 0, 2 * Math.PI);
+            context.fillStyle = dotStates[i][j] ? "white" : "black";
+            context.fill();
+            const dot = { x: i, y: j };
+            canvas.addEventListener("click", event => {
+              const rect = canvas.getBoundingClientRect();
+              const clickX = Math.floor((event.clientX - rect.left - xStart) / dotSpacing);
+              const clickY = Math.floor((event.clientY - rect.top - yStart) / dotSpacing);
+              if (clickX === dot.x && clickY === dot.y) {
+                toggleDotColors(dot.x, dot.y);
+                drawDots();
+              }
+            });
+          }
+        }
+      }
+      
+      function toggleDotState(x, y) {
+        if (x >= 0 && x < 3 && y >= 0 && y < 3) {
+          dotStates[x][y] = !dotStates[x][y];
+        }
+      }
+      
+      function toggleDotColors(x, y) {
+        toggleDotState(x, y);
+        toggleDotState(x, y - 1);
+        toggleDotState(x, y + 1);
+        toggleDotState(x - 1, y);
+        toggleDotState(x + 1, y);
+      }
+      
+      drawDots();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="pragma" content="no-cache">  
+<meta http-equiv="Cache-Control" content="no-cache">  
+<meta http-equiv="Expires" content="0">  
+<link rel="stylesheet" href="/css/General.css">
+<link rel="stylesheet" href="/css/elements2.css">
+
+<title>RitchFisher's Homepage</title>
+</head>
+
+<body>
+	
+	<div class="navtop">
+		<a id="logo" href="/index.html">RitchFisher's Homepage</a>
+		<a href="/thoughts.html">笔记</a>
+		<a href="/things_i_like.html">推介</a>
+		<a href="/works.html">作品</a>
+		<a href="/tpa.html">/tpa ...</a>
+	</div>	
+	<div class="navside">
+		<a href="">音乐</a>
+		<a href="">建筑</a>
+		<a href="elements.html">游戏</a>
+		<a href="photographs.html">摄影</a>
+	</div>
+	<div class="column">
+		<h2>Elements</h2>
+	</div>	
+<div class="blanktop"></div>
+	
+<div class="content">
+<h6>2018 - 2019 / 2022 - ...</h6>
+  <div class="discribe"></div>
+  
+<p>&nbsp;</p>
+    <p>这是一个抽象解谜游戏，原开发平台为Unity，与<a href="" target="_blank">Rodney田</a>作为升学材料共同制作，2019夏提交后不再深入。当时的进度参见：<a href="https://www.lofter.com/collection/eric20020506/?op=collectionDetail&collectionId=13910508" target="_blank">图库</a>。2022基于html和js重启，您现在所看到的是其简要预览。 </p>
+<p></p>
+  <p>Elements并非只是用于消遣，也不仅仅关注问题的最终答案，它受到《<a href="http://the-witness.net/" target="_blank">The Witness</a>》与<a href="https://playgameoflife.com/" target="_blank">Game of Life</a>等作品的启发，探索了“涌现”的概念，并且希望玩家能尽可能完全地考察系统展现出的规律。这是一个鼓励你沉思、使你不得不做笔记的游戏——因此它在某种意义上更像玩具（或一些单纯的数学问题）（我曾意识到这个系统与魔方的相似性），而不是游戏。最后，除了对各谜题、规则及其体现的涌现性的总结以外，还有附加的，我对于在“做游戏”与“扮演造物主”间相似之处的感悟中，获得的种种启发。</p>
+  <p>在完整的构思中，游戏后续还将引入不同规格的“圆点阵列”（这里只展示了3X3的形式）、增加步数限制，并且形成题库；若干章节之后，规则本身也会被改写，形成完全不同的规律。</p>
+<h6>(2022.2.1 2:28)</h6>
+<p>&nbsp;</p>
+<h3>序章</h3>
+<p>在第一个章节中您将遇到的这个机制十分简单，事实上，不止一次地有人告诉我他们在别处遇见过完全一样的规则——据我了解，最早采用这个规则的电子游戏是Tiger Electronics在1995年发行的Lights Off。如果您在网上搜索“关灯游戏”、“十字翻转棋”、“关窗游戏”等等关键词，也将发现众多相关的小游戏（也包括基于网页的）或者研究文章（但当然，强烈不被建议的是您立刻去网上搜索这些文章）。此外，2015年发行的像素风解谜游戏《Please, Don't Touch Anything》中也出现了这一规则。（感谢前队友Rodney和indienova会员<a href="https://indienova.com/u/asukalin" target="_blank">方程</a>告诉了我这些作品（后者还提供了很多珍贵的分析思路），才使我接触到这些前人的成果）。</p>
+<p>然而，那些现成的游戏作品对这一规则的挖掘在一些方面还并不够深入，也没有特意营造鼓励玩家达到精通的氛围；大多数的研究文章则虽然提出了通用（暴力）的计算方式，但运算量巨大，也不能引导玩家在实践中探索更多巧妙的办法。于是最终只有少数有兴趣的玩家才获得这些额外的发现。这对该机制的潜力实在是一种浪费。</p>
+<script src="elements/javascript/elements2.js"></script>
+	
+<div class="board1">
+		
+		<div class="steplight">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		
+		<div class="dot1">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			
+		</div>
+	
+  </div>
+
+	<div style="clear:both;"></div>
+	
+	<div class="library">
+		<div class="qs"> <!-- questions -->
+			<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+	  </div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+		<div class="qs"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  </div>
+    <p style="clear:both;">圆点有黑/白两个状态，任意点击它们，观察其变化的机制。在阵列被打乱之后尝试将所有圆点恢复至均为白的状态。请思考：对每个圆点给定任意的初始情况，是否均存在解法？在可解的情况下是否存在通用（便捷）的还原方法？</p>
+    <p>对这一问题进行完全考察所需的时间跨度，长时可能花费数天，说明这点的目的是避免使您很快感到气馁。</p>
+    <p>&nbsp;</p>
+    <p>上方题库可以纵向滚动</p>
+    <p>&nbsp;</p>
+  <p>check this out:</p>
+    <p><a href="https://www.jaapsch.net/puzzles/lomath.htm#general" target="_blank">Lights Off </a></p>
+    <p>&nbsp;</p>
+<p>以下是4x4的阵列。它具有3x3阵列的各个特性么？</p>
+<div class="board2">
+		<div class="steplight">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<div class="dot2">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	
+  </div>
+	<!-- <div id="text">?</div> -->
+ 
+</div>	
+	
+	
+	
+</body>
+</html>
