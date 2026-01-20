@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- <link rel="stylesheet" href="/css/General.css"> -->
+<title>音乐 - 图形</title>
+<style>
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    overflow: hidden;
+}
+.container {
+    position: relative;
+    width: 800px; /* Adjust as needed */
+    height: 800px; /* Adjust as needed */
+}
+.square {
+    width: 100%;
+    height: 100%;
+    top: 00%;
+    border: 5px solid white;
+    background-color: black;
+}
+.line {
+    position: absolute;
+    width: 200%;
+    left: -50%;
+    height: 5px;
+    background-color: white;
+    top: 50%;
+    transform-origin: center;
+    display: block;
+    transition: none;
+    opacity: 0.02;
+}
+</style>
+	
+</head>
+<body>
+<div class="container">
+  <div class="square"></div>
+  <p style="background-color:white; color: black; letter-spacing: 4px;">'z' to ',' 't' ']' = c to c3 ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; change key with '~' and num1</p>
+</div>
+	<!--
+	<input type="file" id="midiFile" accept=".mid">
+  <button id="playButton">Play MIDI</button>
+-->
+<script>
+//全部代码来自GPT3.5
+	  
+//画线
+const lineContainer = document.querySelector('.container');
+
+for (let i = 0; i < 128; i++) {
+  const line = document.createElement('div');
+  line.classList.add('line');
+  line.id = `line${i}`;
+  // Calculate offset based on the line number
+  //const offset = 400*(128-(i-(i%12)));  // Adjust this as needed
+	
+	//	-200*((i-i%12)-72);		600000/i-10000;		-200*((i-72)-(7-i%6));		-200*((i-72)-(i+6)%12);		-1000*(((m-5.5)*(m-5.5)/49+1)*((i-60)/12));		-0.05*(((i-60)-((i+5.9)%12))*(128*2-i));		-0.02*(((i-60)+v3)*(128*2-i));			*(((i-6)*(i-6)-36)/36);
+	
+	// i+(i%12-i%7)		(a%12+2*(a%12-(a%12)%7)*6/7) * 15;    (180*Math.pow(2,(a%12)/12)-180)+(180*(a%12-(a%12)%7)/7);
+	
+	//((Math.sin(v2)+1)*(Math.sin(v2)+1)-1)*(Math.sin(v2))*4;		(Math.sin(v2)+1)*(Math.sin(v2)+1)*(Math.sin(v2)+1)*10*(78-i)/128;
+	
+	//const v2 = ((m-10)/12)*(2 * Math.PI);		const v3 = (Math.atan(v2));		const offset = -300*v3-2*(im); //in web, delete "-v3"
+	//const v2 = ((m-1)/12)*(2 * Math.PI);		const v3 = (Math.sin(v2))*(Math.sin(v2))*(Math.sin(v2))*2;		const offset = -0.04*((i-66)-v3)*(128*2-i); //in web, delete "-v3"
+	
+	
+		const twv = 10.703356984674;
+	
+	const m = i%12;
+	const n = i%6;
+	const im = i-m ;
+	const a = i+12-0; //tonality
+	const v2 = ((m-10)/12)*(2 * Math.PI);
+	const v3 = (Math.atan(v2));
+	const offset = -0.04*((i-67)-v3)*(128*2-i); //in web, delete "-v3"
+	const angle =  (a%12+2*(a%12-(a%12)%7)*6/7) * 15;
+  	line.style.transform = `rotate(-${angle}deg) translateY(${offset}px)`;
+	line.style.height=`${(1-i/128)*(1-i/128)*(1-i/128)*30}px`;
+	//line.style.left=`${(i-100)}%`;
+	//line.style.transform = ` translateY(${offset}%) rotate(${angle}deg) `;
+//line.style.marginLeft= `${(128-i)*(-8)}%`;
+	//line.style.transform = `translateY(-${offset}%) rotate(${angle}deg)`;
+	//line.style.width=`${(5000/i)}%`;
+	//line.style.left=`-${(5000/i)/2}%`;
+  lineContainer.appendChild(line);
+	
+}
+
+	 
+	
+	
+	
+// Add event listener for MIDI input
+navigator.requestMIDIAccess().then(midiAccess => {
+  const inputs = midiAccess.inputs.values();
+  for (const input of inputs) {
+    input.onmidimessage = handleMidiInput;
+  }
+}); 
+
+	
+	
+	
+//midi
+	const midiToLineMapping = {};
+
+for (let i = 0; i <= 127; i++) {
+  midiToLineMapping[i] = i;
+}
+	document.addEventListener('keydown', function(event) {
+  const key = event.key.toLowerCase();
+
+  // 根据按下的键来修改映射值
+  if (key === '1') {
+    // 增加映射值
+    for (let i = 0; i <= 127; i++) {
+      midiToLineMapping[i]++;
+    }
+  } else if (key === '`') {
+    // 减少映射值
+    for (let i = 0; i <= 127; i++) {
+      midiToLineMapping[i]--;
+    }
+  }
+
+  // 在这里可以进行其他操作，例如更新页面上的元素
+  // ...
+});
+	
+	
+
+	function handleMidiInput(event) {
+  const status = event.data[0] & 0xf0;  // Extract the status byte (first 4 bits)
+  const note = event.data[1];  // MIDI note number
+  const velocity = event.data[2];  // MIDI note velocity (speed)
+
+  if (status === 0x80) {
+    // MIDI note off event
+    const lineId = midiToLineMapping[note];
+    if (lineId !== undefined) {
+      const line = document.getElementById(`line${lineId}`);
+      line.style.transition = 'opacity 0.3s';
+      line.style.opacity = '0.02';
+    }
+	  
+  } else if (status === 0x90) {
+    // MIDI note on event
+    const lineId = midiToLineMapping[note];
+    if (lineId !== undefined) {
+      const line = document.getElementById(`line${lineId}`);
+      // Map velocity to opacity (velocity ranges from 0 to 127)
+      const opacity = velocity / 127;
+      line.style.display = 'block';
+      line.style.transition = 'none';
+      line.style.opacity = opacity.toString();
+		
+		//if (line) {
+       // line.style.display = 'block';
+       // line.style.transition = 'none';
+       // line.style.opacity = velocity.toString();
+			// 控制线条的其他属性，例如持续时间
+        //setTimeout(() => {
+         // line.style.transition = 'opacity 0.5s';
+         // line.style.opacity = '0.02';
+      //  },10);
+     // }
+		
+		
+    }
+  }
+}
+	
+	
+	
+//键盘
+   const keyToLineMapping = {
+  'z': 48,
+  's': 49,
+  'x': 50,
+  'd': 51,
+  'c': 52,
+  'v': 53,
+  'g': 54,
+  'b': 55,
+  'h': 56,
+  'n': 57,
+  'j': 58,
+  'm': 59,
+  ',': 60,
+  'l': 61,
+  '.': 62,
+  ';': 63,
+  '/': 64,
+  'q': 65,
+  '2': 66,
+  'w': 67,
+  '3': 68,
+  'e': 69,
+  '4': 70,
+  'r': 71,
+  't': 72,
+  '6': 73,
+  'y': 74,
+  '7': 75,
+  'u': 76,
+  'i': 77,
+  '9': 78,
+  'o': 79,
+  '0': 80,
+  'p': 81,
+  '-': 82,
+  '[': 83,
+  ']': 84
+};
+	
+	document.addEventListener('keydown', function(event) {
+  if (event.key === '1') {
+    // 按下+时，所有映射值增加1
+    for (const key in keyToLineMapping) {
+      keyToLineMapping[key]++;
+    }
+  } else if (event.key === '`') {
+    // 按下-时，所有映射值减少1
+    for (const key in keyToLineMapping) {
+      keyToLineMapping[key]--;
+    }
+  }
+  // 在这里你可以执行其他逻辑
+});
+
+	
+    document.addEventListener('keydown', function(event) {
+      const key = event.key.toLowerCase();
+      const lineId = keyToLineMapping[key];
+      if (lineId !== undefined) {
+        const line = document.getElementById(`line${lineId}`);
+        line.style.display = 'block';
+        line.style.transition = 'none';
+        line.style.opacity = '1';
+      }
+    });
+
+    document.addEventListener('keyup', function(event) {
+      const key = event.key.toLowerCase();
+      const lineId = keyToLineMapping[key];
+      if (lineId !== undefined) {
+        const line = document.getElementById(`line${lineId}`);
+        line.style.transition = 'opacity 0.5s';
+        line.style.opacity = '0.02';
+      }
+    });
+	
+	
+	
+	
+  </script>
+</body>
+</html>
+
+<!--
+
+
+
+
+
+const m = i%12;
+	const n = i%6;
+	const im = i-m ;
+	const a = i+12-0; //tonality
+	const v2 = ((m-1)/12)*(2 * Math.PI);
+	const v3 = (Math.sin(v2)+1)*(Math.sin(v2)+1)*(Math.sin(v2)+1)*10*(78-i)/128;
+	const offset = -0.07*((i-66)-v3)*(128*2-i);
+	const angle =  (a%12+2*(a%12-(a%12)%7)*6/7) * 15;
+  	line.style.transform = `rotate(-${angle}deg) translateY(${offset}px)`;
+	line.style.height=`${(1-i/128)*(1-i/128)*(1-i/128)*30}px`;
+
+
+
+
+
+
+
+// MIDI 文件解析器
+function parseMidiFile(arrayBuffer) {
+  const midiData = new Uint8Array(arrayBuffer);
+  const notes = [];
+
+  for (let i = 0; i < midiData.length; i += 3) {
+    const note = {
+      noteNumber: midiData[i],
+      velocity: midiData[i + 1],
+      duration: midiData[i + 2],
+    };
+    notes.push(note);
+  }
+
+  return notes;
+}
+
+// 解析 MIDI 文件并控制线条
+fetch('midi.mid')
+  .then((response) => response.arrayBuffer())
+  .then((data) => {
+    const midiNotes = parseMidiFile(data);
+    const lineContainer = document.querySelector('.container');
+
+    midiNotes.forEach((note) => {
+      const lineId = note.noteNumber;
+      const velocity = note.velocity / 127;
+      const line = document.getElementById(`line${lineId}`);
+
+      if (line) {
+        line.style.display = 'block';
+        line.style.transition = 'none';
+        line.style.opacity = velocity.toString();
+
+        // 控制线条的其他属性，例如持续时间
+        setTimeout(() => {
+          line.style.transition = 'opacity 0.5s';
+          line.style.opacity = '0.02';
+        }, note.duration);
+      }
+    });
+  });
+
+const lineContainer = document.querySelector('.container');
+
+for (let i = 0; i < 128; i++) {
+  const line = document.createElement('div');
+  line.classList.add('line');
+  line.id = `line${i}`;
+  line.style.top = `${50 - (i - 60)}%`;  // Adjusted the top position
+  line.style.transform = `rotate(${-i * 15}deg)`;
+  lineContainer.appendChild(line);
+
+}-->

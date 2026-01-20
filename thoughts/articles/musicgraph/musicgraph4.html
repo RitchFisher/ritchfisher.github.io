@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/General.css">
+<title>Shape Example</title>
+<style>
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	background-color: white;
+}
+.container {
+    position: relative;
+    width: 800px; /* Adjust as needed */
+    height: 800px; /* Adjust as needed */
+}
+.square {
+    width: 2000%;
+    height: 100%;
+	top: 00%;
+    border: 0px solid black;
+    background-color: white;
+}
+.line {
+    position: absolute;
+    width: 100%;
+	left:0%;
+	margin-left:-5000px;
+    height: 15px;
+    background-color: black;
+    top: 50%;
+    transform-origin: center;
+    display: block;
+    transition: none;
+	opacity:0.02;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="square"></div>
+</div>
+<script>
+//全部代码来自GPT3.5
+	  
+//画线
+const lineContainer = document.querySelector('.container');
+
+for (let i = 0; i < 128; i++) {
+  const line = document.createElement('div');
+  line.classList.add('line');
+  line.id = `line${i}`;
+  // Calculate offset based on the line number
+  //const offset = 400*(128-(i-(i%12)));  // Adjust this as needed
+	//	-200*((i-i%12)-72)	600000/i-10000			
+	const offset = i*(100/12);
+	const angle =  (i%12+9) * 15;
+  line.style.transform = `rotate(-${angle}deg)`;
+	line.style.left = `${offset}%`;
+	//line.style.left=`${(i-100)}%`;
+	//line.style.transform = ` translateY(${offset}%) rotate(${angle}deg) `;
+//line.style.marginLeft= `${(128-i)*(-8)}%`;
+	//line.style.transform = `translateY(-${offset}%) rotate(${angle}deg)`;
+	//line.style.width=`${(5000/i)}%`;
+	//line.style.left=`-${(5000/i)/2}%`;
+  lineContainer.appendChild(line);
+}
+
+	 
+	
+	
+	
+// Add event listener for MIDI input
+navigator.requestMIDIAccess().then(midiAccess => {
+  const inputs = midiAccess.inputs.values();
+  for (const input of inputs) {
+    input.onmidimessage = handleMidiInput;
+  }
+}); 
+
+	
+	
+	
+//midi
+	const midiToLineMapping = {};
+
+for (let i = 0; i <= 127; i++) {
+  midiToLineMapping[i] = i;
+}
+
+	function handleMidiInput(event) {
+  const status = event.data[0] & 0xf0;  // Extract the status byte (first 4 bits)
+  const note = event.data[1];  // MIDI note number
+  const velocity = event.data[2];  // MIDI note velocity (speed)
+
+  if (status === 0x80) {
+    // MIDI note off event
+    const lineId = midiToLineMapping[note];
+    if (lineId !== undefined) {
+      const line = document.getElementById(`line${lineId}`);
+      line.style.transition = 'opacity 0.2s';
+      line.style.opacity = '0.02';
+    }
+  } else if (status === 0x90) {
+    // MIDI note on event
+    const lineId = midiToLineMapping[note];
+    if (lineId !== undefined) {
+      const line = document.getElementById(`line${lineId}`);
+      // Map velocity to opacity (velocity ranges from 0 to 127)
+      const opacity = velocity / 127;
+      line.style.display = 'block';
+      line.style.transition = 'none';
+      line.style.opacity = opacity.toString();
+    }
+  }
+}
+	//键盘
+	
+   const keyToLineMapping = {
+  'z': 48,
+  's': 49,
+  'x': 50,
+  'd': 51,
+  'c': 52,
+  'v': 53,
+  'g': 54,
+  'b': 55,
+  'h': 56,
+  'n': 57,
+  'j': 58,
+  'm': 59,
+  ',': 60,
+  'l': 61,
+  '.': 62,
+  ';': 63,
+  '/': 64,
+  'q': 65,
+  '2': 66,
+  'w': 67,
+  '3': 68,
+  'e': 69,
+  '4': 70,
+  'r': 71,
+  't': 72,
+  '6': 73,
+  'y': 74,
+  '7': 75,
+  'u': 76,
+  'i': 77,
+  '9': 78,
+  'o': 79,
+  '0': 80,
+  'p': 81,
+  '-': 82,
+  '[': 83,
+  ']': 84
+};
+	
+	document.addEventListener('keydown', function(event) {
+  if (event.key === '1') {
+    // 按下+时，所有映射值增加1
+    for (const key in keyToLineMapping) {
+      keyToLineMapping[key]++;
+    }
+  } else if (event.key === '`') {
+    // 按下-时，所有映射值减少1
+    for (const key in keyToLineMapping) {
+      keyToLineMapping[key]--;
+    }
+  }
+  // 在这里你可以执行其他逻辑
+});
+	
+	
+    document.addEventListener('keydown', function(event) {
+      const key = event.key.toLowerCase();
+      const lineId = keyToLineMapping[key];
+      if (lineId !== undefined) {
+        const line = document.getElementById(`line${lineId}`);
+        line.style.display = 'block';
+        line.style.transition = 'none';
+        line.style.opacity = '1';
+      }
+    });
+
+    document.addEventListener('keyup', function(event) {
+      const key = event.key.toLowerCase();
+      const lineId = keyToLineMapping[key];
+      if (lineId !== undefined) {
+        const line = document.getElementById(`line${lineId}`);
+        line.style.transition = 'opacity 0.5s';
+        line.style.opacity = '0';
+      }
+    });
+  </script>
+</body>
+</html>
+
+<!--
+
+const lineContainer = document.querySelector('.container');
+
+for (let i = 0; i < 128; i++) {
+  const line = document.createElement('div');
+  line.classList.add('line');
+  line.id = `line${i}`;
+  line.style.top = `${50 - (i - 60)}%`;  // Adjusted the top position
+  line.style.transform = `rotate(${-i * 15}deg)`;
+  lineContainer.appendChild(line);
+
+}-->
