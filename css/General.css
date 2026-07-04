@@ -62,7 +62,7 @@ body{
 }
 .navside{
 	width: 285px;
-	height:800px;
+	height: 100%;
 	position: fixed;
 	float: right;
 	text-align: right;
