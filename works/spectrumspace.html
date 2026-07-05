@@ -2,9 +2,15 @@
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>tubnjsdrz - Spectrum Space</title>
     
-    <link rel="stylesheet" href="/css/General.css">
+    <link rel="stylesheet" href="./tubnjsdrz - Elements_files/General.css">
+    <link rel="stylesheet" href="./tubnjsdrz - Elements_files/elements2.css">
 
     <style>
+        /* 暴力覆盖 General.css 带来的背景图污染 */
+        body, .navtop, .navside, .column, .panel-container {
+            background-image: none !important;
+        }
+
         body { 
             margin: 0; 
             background: #000 !important; 
@@ -26,6 +32,7 @@
 
         .navtop, .navside, .column {
             z-index: 10;
+            background-color: transparent !important;
         }
 
         /* ── 当隐藏 UI 时触发的样式 ── */
@@ -61,7 +68,7 @@
             display: inline-block;
         }
 
-        /* ── 灰色精致滑条风格 ── */
+        /* ── 灰色精致短杠滑条风格 ── */
         .control-group input[type="range"] {
             width: 80px; 
             cursor: pointer;
@@ -71,7 +78,6 @@
             outline: none;
             border-radius: 2px;
         }
-        /* 原生竖杠滑块样式 */
         .control-group input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 1.5px;
@@ -131,7 +137,8 @@
         <a href="/works/elements.html">architecutre</a>
         <a href="/works/elements.html">game</a>
         <a href="/works/photographs.html">photograph</a>
-        <a href="/works/spectrumspace.html"><strong>spectrumspace</strong></a>
+        
+        <a href="/works/spectrumspace.html" style="font-weight: bold; margin-top: 8px; display: block;">spectrumspace</a>
         
         <div class="panel-container">
             <div class="control-group"><label>brightness</label><input type="range" id="brightnessScale" min="0" max="0.02" step="0.0001" value="0.005"></div>
@@ -170,7 +177,7 @@
         <h2>Spectrum Space</h2>
     </div>
 
-    <script src="./3D Desktop Audio Spectrum_files/three.min.js.download"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         const params = {
             brightnessScale:      0.005,  
@@ -254,7 +261,7 @@
                 }
             });
 
-            // ── 完美的连续极坐标差值映射（杜绝边界回弹，修正旋转方向） ──
+            // ── 完全替换为你上传的 FineRotation.html 中的鼠标拖拽逻辑 ──
             window.addEventListener('mousedown', (e) => {
                 isDragging = true;
                 
