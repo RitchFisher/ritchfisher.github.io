@@ -5,121 +5,29 @@
     <link rel="stylesheet" href="/css/General.css">
 
     <style>
-        /* 暴力覆盖 General.css 带来的背景图污染 */
-        body, .navtop, .navside, .column, .panel-container {
-            background-image: none !important;
-        }
-
-        body { 
-            margin: 0; 
-            background: #000 !important; 
-            color: #fff !important;      
-            overflow: hidden;
-            font-family: STSong, serif !important; 
-        }
+        body, .navtop, .navside, .column, .panel-container { background-image: none !important; }
+        body { margin: 0; background: #000 !important; color: #fff !important; overflow: hidden; font-family: STSong, serif !important; }
+        canvas { display: block; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; }
         
-        /* ── 3D 画布全屏固定定位 ── */
-        canvas { 
-            display: block; 
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1; 
-        }
-
-        .navtop, .navside, .column {
-            z-index: 10;
-            background-color: transparent !important;
-        }
-
-        /* ── 当隐藏 UI 时触发的样式 ── */
-        .ui-hidden .navtop, 
-        .ui-hidden .navside, 
-        .ui-hidden .column {
-            opacity: 0 !important;
-            visibility: hidden !important;
-            pointer-events: none;
-        }
-
+        .navtop, .navside, .column { z-index: 10; background-color: transparent !important; }
+        .ui-hidden .navtop, .ui-hidden .navside, .ui-hidden .column { opacity: 0 !important; visibility: hidden !important; pointer-events: none; }
+        
         a, a:link, a:visited, a:active { color: #fff !important; text-decoration: none; }
         a:hover { color: #888 !important; }
 
-        .panel-container {
-            margin-top: 56px; 
-            text-align: right; 
-        }
+        .panel-container { margin-top: 56px; text-align: right; }
+        .control-group { display: inline-flex; justify-content: flex-end; align-items: center; margin-bottom: 10px; width: 210px; }
+        .control-group label { font-size: 13px; color: rgba(255, 255, 255, 0.85); padding-right: 12px; white-space: nowrap; display: inline-block; }
+        
+        .control-group input[type="range"] { width: 80px; cursor: pointer; background: rgba(255, 255, 255, 0.15); height: 3px; -webkit-appearance: none; outline: none; border-radius: 2px; }
+        .control-group input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 1.5px; height: 6px; background: #ffffff; cursor: pointer; }
+        .control-group input[type="range"]::-moz-range-thumb { border: none; width: 1.5px; height: 6px; background: #ffffff; cursor: pointer; }
 
-        .control-group {
-            display: inline-flex; 
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 10px;
-            width: 210px; 
-        }
-
-        .control-group label {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.85);
-            padding-right: 12px;
-            white-space: nowrap;
-            display: inline-block;
-        }
-
-        /* ── 灰色精致短杠滑条风格 ── */
-        .control-group input[type="range"] {
-            width: 80px; 
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.15); 
-            height: 3px;
-            -webkit-appearance: none;
-            outline: none;
-            border-radius: 2px;
-        }
-        .control-group input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 1.5px;
-            height: 6px;
-            background: #ffffff;
-            cursor: pointer;
-        }
-        .control-group input[type="range"]::-moz-range-thumb {
-            border: none;
-            width: 1.5px;
-            height: 6px;
-            background: #ffffff;
-            cursor: pointer;
-        }
-
-        .switch-text-container {
-            width: 80px; 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-        }
-
-        .switch-opt {
-            font-size: 13px;
-            cursor: pointer;
-            color: rgba(255, 255, 255, 0.35); 
-            transition: color 0.1s;
-        }
-
-        .switch-opt.active {
-            color: #fff !important; 
-            font-weight: normal !important; 
-        }
-
-        .switch-divider {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.2);
-        }
-
-        .spacer-row {
-            margin-top: 24px;
-        }
+        .switch-text-container { width: 80px; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .switch-opt { font-size: 13px; cursor: pointer; color: rgba(255, 255, 255, 0.35); transition: color 0.1s; }
+        .switch-opt.active { color: #fff !important; font-weight: normal !important; }
+        .switch-divider { font-size: 13px; color: rgba(255, 255, 255, 0.2); }
+        .spacer-row { margin-top: 24px; }
     </style>
 </head>
 <body>
@@ -144,113 +52,66 @@
             <div class="control-group"><label>bass boost</label><input type="range" id="bassBoost" min="-0.5" max="0.5" step="0.01" value="0"></div>
             <div class="control-group"><label>high freq boost</label><input type="range" id="highFreqBoost" min="0" max="2" step="0.01" value="2"></div>
             <div class="control-group"><label>brightness power</label><input type="range" id="brightnessPower" min="1" max="3" step="0.01" value="2"></div>
-            
             <div class="control-group spacer-row"><label>unfold</label><input type="range" id="unfold" min="0" max="1" step="0.01" value="1"></div>
             <div class="control-group"><label>rotate</label><input type="range" id="globalRotation" min="0" max="6.283185" step="0.01" value="3.141592"></div>
-            
             <div class="control-group"><label>bounce</label><input type="range" id="zAmplitudeInfluence" min="0" max="1" step="0.01" value="0"></div>
             <div class="control-group"><label>z center</label><input type="range" id="zCenter" min="0" max="1" step="0.01" value="0.5"></div>
             
             <div class="control-group">
                 <label>octave</label>
                 <div class="switch-text-container">
-                    <span class="switch-opt active" id="opt-180">180</span>
-                    <span class="switch-divider">/</span>
-                    <span class="switch-opt" id="opt-360">360</span>
+                    <span class="switch-opt active" id="opt-180">180</span><span class="switch-divider">/</span><span class="switch-opt" id="opt-360">360</span>
                 </div>
             </div>
             
             <div class="control-group">
                 <label>extend</label>
                 <div class="switch-text-container">
-                    <span class="switch-opt active" id="opt-double">double</span>
-                    <span class="switch-divider">/</span>
-                    <span class="switch-opt" id="opt-single">single</span>
+                    <span class="switch-opt active" id="opt-double">double</span><span class="switch-divider">/</span><span class="switch-opt" id="opt-single">single</span>
                 </div>
             </div>
         </div>
     </div>
     
-    <div class="column">
-        <h2>Spectrum Space</h2>
-    </div>
+    <div class="column"><h2>Spectrum Space</h2></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         const params = {
-            brightnessScale:      0.005,  
-            contrast:             0.9, 
-            bassBoost:            0,
-            highFreqBoost:        2,
-            brightnessPower:      2,
-            zAmplitudeInfluence:  0,
-            zCenter:              0.5,
-            globalRotation:       3.141592, 
-            unfold:               1,        
+            brightnessScale: 0.005, contrast: 0.9, bassBoost: 0, highFreqBoost: 2,
+            brightnessPower: 2, zAmplitudeInfluence: 0, zCenter: 0.5, globalRotation: 3.141592, unfold: 1
         };
 
-        let is360Degree = false;
-        let isSingleSide = false;
-
-        let isDragging = false;
-
-        // 记录上一帧鼠标的绝对极坐标状态，用于计算每帧的微小 Delta
-        let lastMouseTheta = 0;
-        let lastMouseDist = 0;
-
-        // 当前物理控制目标值
-        let targetA = 80.0;
-        let targetTheta = Math.PI / 2; 
-
-        let currentA = 80.0;
-        let currentTheta = Math.PI / 2;
-
-        const dampingFactor = 0.15; 
+        let is360Degree = false, isSingleSide = false, isDragging = false;
+        let lastMouseTheta = 0, lastMouseDist = 0;
+        let targetA = 80.0, targetTheta = Math.PI / 2; 
+        let currentA = 80.0, currentTheta = Math.PI / 2;
         let cameraZ = -250; 
+        const dampingFactor = 0.15, NUM_LINES = 2400, LINE_LENGTH = 1e4;
 
-        // 辅助函数：获取当前鼠标相对于屏幕中心的极坐标
+        let analyser, dataArray, bufferLength, logMin, logMax, logRange, maxFreq;
+        let renderer, scene, camera, lineSegments;
+
         function getMousePolar(clientX, clientY) {
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2;
-            const dx = clientX - centerX;
-            const dy = centerY - clientY; // 翻转 Y 轴对齐直角坐标系
-            
-            return {
-                theta: Math.atan2(dy, dx),
-                dist: Math.sqrt(dx * dx + dy * dy)
-            };
+            const dx = clientX - window.innerWidth / 2;
+            const dy = window.innerHeight / 2 - clientY; 
+            return { theta: Math.atan2(dy, dx), dist: Math.sqrt(dx * dx + dy * dy) };
         }
 
         function setupParamListeners() {
-            for (const key of Object.keys(params)) {
+            Object.keys(params).forEach(key => {
                 const el = document.getElementById(key);
-                if (!el) continue;
-                el.addEventListener('input', () => {
-                    params[key] = parseFloat(el.value);
-                });
-            }
-
-            const opt180 = document.getElementById('opt-180');
-            const opt360 = document.getElementById('opt-360');
-            opt180.addEventListener('click', () => {
-                is360Degree = false;
-                opt180.classList.add('active'); opt360.classList.remove('active');
-            });
-            opt360.addEventListener('click', () => {
-                is360Degree = true;
-                opt360.classList.add('active'); opt180.classList.remove('active');
+                if (el) el.addEventListener('input', () => params[key] = parseFloat(el.value));
             });
 
-            const optDouble = document.getElementById('opt-double');
-            const optSingle = document.getElementById('opt-single');
-            optDouble.addEventListener('click', () => {
-                isSingleSide = false;
-                optDouble.classList.add('active'); optSingle.classList.remove('active');
-            });
-            optSingle.addEventListener('click', () => {
-                isSingleSide = true;
-                optSingle.classList.add('active'); optDouble.classList.remove('active');
-            });
+            const bindToggle = (id1, id2, callback) => {
+                const el1 = document.getElementById(id1), el2 = document.getElementById(id2);
+                el1.addEventListener('click', () => { callback(true); el1.classList.add('active'); el2.classList.remove('active'); });
+                el2.addEventListener('click', () => { callback(false); el2.classList.add('active'); el1.classList.remove('active'); });
+            };
+
+            bindToggle('opt-360', 'opt-180', val => is360Degree = val);
+            bindToggle('opt-single', 'opt-double', val => isSingleSide = val);
 
             window.addEventListener('keydown', (e) => {
                 if (e.code === 'Space' || e.key === 'f' || e.key === 'F') {
@@ -259,11 +120,8 @@
                 }
             });
 
-            // ── 完全替换为你上传的 FineRotation.html 中的鼠标拖拽逻辑 ──
             window.addEventListener('mousedown', (e) => {
                 isDragging = true;
-                
-                // 记录按下那一刻鼠标的极坐标起点
                 const polar = getMousePolar(e.clientX, e.clientY);
                 lastMouseTheta = polar.theta;
                 lastMouseDist = polar.dist;
@@ -271,79 +129,48 @@
 
             window.addEventListener('mousemove', (e) => {
                 if (!isDragging) return;
-
                 const polar = getMousePolar(e.clientX, e.clientY);
-
-                // 1. 计算当前帧与上一帧之间的微小角度变化量
-                let deltaTheta = polar.theta - lastMouseTheta;
                 
-                // 【核心修复】如果发生了过半圈的边界跳跃（如从 PI 突变到 -PI），将其拉回微小的真实运动增量
+                let deltaTheta = polar.theta - lastMouseTheta;
                 if (deltaTheta < -Math.PI) deltaTheta += Math.PI * 2;
                 if (deltaTheta > Math.PI)  deltaTheta -= Math.PI * 2;
 
-                // 2. 计算当前帧与上一帧之间的微小距离变化量
-                let deltaDist = polar.dist - lastMouseDist;
-
-                // 3. 将变化量应用到控制目标上
-                // 【核心修复】改用 `-=` 完美反转旋转方向，使其完全符合拖拽直觉
                 targetTheta -= deltaTheta;
-                // 距离控制依然保持平稳累加（拉远则变长，靠近中心则变短）
-                targetA += deltaDist * 0.4;
+                targetA = Math.max(0, Math.min(100, targetA + (polar.dist - lastMouseDist) * 0.4));
 
-                // 限制骨架规模在 0 ~ 100
-                targetA = Math.max(0, Math.min(100, targetA));
-
-                // 迭代记录，为下一帧做准备
                 lastMouseTheta = polar.theta;
                 lastMouseDist = polar.dist;
             });
 
-            window.addEventListener('mouseup', () => { isDragging = false; });
-            window.addEventListener('mouseleave', () => { isDragging = false; });
-
+            window.addEventListener('mouseup', () => isDragging = false);
+            window.addEventListener('mouseleave', () => isDragging = false);
             window.addEventListener('wheel', (e) => {
-                cameraZ -= e.deltaY * 0.4;
-                cameraZ = Math.max(-1500, Math.min(-50, cameraZ)); 
+                cameraZ = Math.max(-1500, Math.min(-50, cameraZ - e.deltaY * 0.4)); 
             }, { passive: true });
         }
-
-        let analyser, dataArray, bufferLength;
-        let logMin, logMax, logRange, maxFreq;
 
         function setupAudio(stream) {
             const audioContext = new AudioContext();
             analyser = audioContext.createAnalyser();
             analyser.fftSize = 16384;
-
-            const source = audioContext.createMediaStreamSource(stream);
-            source.connect(analyser);
+            audioContext.createMediaStreamSource(stream).connect(analyser);
 
             bufferLength = analyser.frequencyBinCount;
             dataArray    = new Uint8Array(bufferLength);
-
-            const minFreq = 20;
-            maxFreq  = audioContext.sampleRate / 4;
-            logMin   = Math.log2(minFreq);
-            logMax   = Math.log2(maxFreq);
-            logRange = logMax - logMin;
+            maxFreq      = audioContext.sampleRate / 4;
+            logMin       = Math.log2(20);
+            logMax       = Math.log2(maxFreq);
+            logRange     = logMax - logMin;
         }
 
-        const NUM_LINES  = 2400;
-        const LINE_LENGTH = 1e4; 
-
-        let renderer, scene, camera, lineSegments;
-
         function setupScene() {
-            scene    = new THREE.Scene();
+            scene = new THREE.Scene();
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 50000); 
             
-            camera.position.set(0, 0, cameraZ);
-            camera.lookAt(0, 0, 0); 
-
             const geometry = new THREE.BufferGeometry();
             const positions = new Float32Array(NUM_LINES * 2 * 3);
             const colors = new Float32Array(NUM_LINES * 2 * 3);
@@ -352,10 +179,7 @@
             geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
             const material = new THREE.LineBasicMaterial({ 
-                vertexColors: true, 
-                transparent: true,
-                blending: THREE.AdditiveBlending, 
-                depthWrite: false 
+                vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false 
             });
 
             lineSegments = new THREE.LineSegments(geometry, material);
@@ -373,113 +197,66 @@
             analyser.getByteFrequencyData(dataArray);
 
             camera.position.set(0, 0, cameraZ);
+            camera.lookAt(0, 0, 0); 
 
-            // 线性缓动跟随
             currentA += (targetA - currentA) * dampingFactor;
             currentTheta += (targetTheta - currentTheta) * dampingFactor;
 
             const positions = lineSegments.geometry.attributes.position.array;
             const colors = lineSegments.geometry.attributes.color.array;
-
+            const poleCos = Math.cos(currentTheta), poleSin = Math.sin(currentTheta);
             const { brightnessScale, contrast, bassBoost, highFreqBoost, brightnessPower, zAmplitudeInfluence, zCenter, globalRotation, unfold } = params;
 
-            // 完美的 a*cos(theta) 与 a*sin(theta) 中心映射
-            const poleCos = Math.cos(currentTheta);
-            const poleSin = Math.sin(currentTheta);
+            // 提炼单侧/双侧的长度乘数因子，省去大量的 if-else 嵌套
+            const m1 = isSingleSide ? 0 : -0.5;
+            const m2 = isSingleSide ? 1 : 0.5;
 
             for (let i = 0; i < NUM_LINES; i++) {
-                const logFreq  = logMin + (i / (NUM_LINES - 1)) * logRange;
-                const freq     = Math.pow(2, logFreq);
-                const binIndex = (freq / maxFreq) * (bufferLength / 2);
-                const lo       = Math.floor(binIndex);
-                const hi       = Math.min(lo + 1, bufferLength - 1);
-                const frac     = binIndex - lo;
+                const t = i / (NUM_LINES - 1);
+                const logFreq = logMin + t * logRange;
+                const binIndex = (Math.pow(2, logFreq) / maxFreq) * (bufferLength / 2);
+                const lo = Math.floor(binIndex);
+                const frac = binIndex - lo;
 
-                let amp = (dataArray[lo] * (1 - frac) + dataArray[hi] * frac) / 255;
+                let amp = (dataArray[lo] * (1 - frac) + dataArray[Math.min(lo + 1, bufferLength - 1)] * frac) / 255;
                 const freqFactor = (logFreq - logMin) / logRange;
 
-                amp *= Math.pow(2, bassBoost    * (1 - freqFactor));
+                amp *= Math.pow(2, bassBoost * (1 - freqFactor));
                 amp *= Math.pow(2, highFreqBoost * freqFactor);
-
-                amp  = Math.pow(amp, 1 / (1.5 - contrast * 1.2));
-                amp  = Math.pow(amp, brightnessPower);
-                amp *= brightnessScale;
+                amp = Math.pow(Math.pow(amp, 1 / (1.5 - contrast * 1.2)), brightnessPower) * brightnessScale;
 
                 const opacityVal = Math.min(Math.max(amp, 0), 1);
-
-                const octaves = logFreq - logMin;
-                const angleMultiplier = is360Degree ? 2.0 : 1.0; 
-                let baseAngle = octaves * Math.PI * angleMultiplier * Math.pow(unfold, 2);
+                const angle = -((logFreq - logMin) * Math.PI * (is360Degree ? 2.0 : 1.0) * (unfold * unfold) + globalRotation);
                 
-                const angle = -(baseAngle + globalRotation);
+                const baseZ = (t - 0.5) * 400; 
+                const zPos = baseZ - (baseZ - (zCenter - 0.5) * 400) * zAmplitudeInfluence * amp;
 
-                const t = i / (NUM_LINES - 1);
-                
-                const baseZ   = (t - 0.5) * 400; 
-                const centerZ = (zCenter - 0.5) * 400;
-                const zPos    = baseZ - (baseZ - centerZ) * zAmplitudeInfluence * amp;
-
-                // 骨架位置分配
                 const poleBaseX = (t - 0.5) * (currentA * poleCos * 2);
                 const poleBaseY = (t - 0.5) * (currentA * poleSin * 2);
 
-                const cosA = Math.cos(angle);
-                const sinA = Math.sin(angle);
-
-                let lx1, ly1, lx2, ly2;
-
-                if (isSingleSide) {
-                    lx1 = 0; ly1 = 0;
-                    lx2 = LINE_LENGTH * cosA;
-                    ly2 = LINE_LENGTH * sinA;
-                } else {
-                    lx1 = (-LINE_LENGTH / 2) * cosA;
-                    ly1 = (-LINE_LENGTH / 2) * sinA;
-                    lx2 = (LINE_LENGTH / 2) * cosA;
-                    ly2 = (LINE_LENGTH / 2) * sinA;
-                }
+                const cosA = Math.cos(angle), sinA = Math.sin(angle);
+                const lx1 = m1 * LINE_LENGTH * cosA, ly1 = m1 * LINE_LENGTH * sinA;
+                const lx2 = m2 * LINE_LENGTH * cosA, ly2 = m2 * LINE_LENGTH * sinA;
 
                 const idx = i * 6;
-                
-                positions[idx]     = poleBaseX + lx1;
-                positions[idx + 1] = poleBaseY + ly1;
-                positions[idx + 2] = zPos;
-                colors[idx]        = opacityVal;
-                colors[idx + 1]    = opacityVal;
-                colors[idx + 2]    = opacityVal;
+                positions[idx]   = poleBaseX + lx1; positions[idx+1] = poleBaseY + ly1; positions[idx+2] = zPos;
+                positions[idx+3] = poleBaseX + lx2; positions[idx+4] = poleBaseY + ly2; positions[idx+5] = zPos;
 
-                positions[idx + 3] = poleBaseX + lx2;
-                positions[idx + 4] = poleBaseY + ly2;
-                positions[idx + 5] = zPos;
-                colors[idx + 3]    = opacityVal;
-                colors[idx + 4]    = opacityVal;
-                colors[idx + 5]    = opacityVal;
+                colors[idx] = colors[idx+1] = colors[idx+2] = opacityVal;
+                colors[idx+3] = colors[idx+4] = colors[idx+5] = opacityVal;
             }
 
             lineSegments.geometry.attributes.position.needsUpdate = true;
             lineSegments.geometry.attributes.color.needsUpdate = true;
-
             renderer.render(scene, camera);
         }
 
         function main() {
-            if (!navigator.mediaDevices?.getDisplayMedia) {
-                alert('此浏览器不支持桌面音频捕获，请使用 Chrome 或 Edge。');
-                return;
-            }
-
+            if (!navigator.mediaDevices?.getDisplayMedia) return alert('此浏览器不支持桌面音频捕获，请使用 Chrome 或 Edge。');
             setupParamListeners();
-
             navigator.mediaDevices.getDisplayMedia({ audio: true, video: true })
-                .then(stream => {
-                    setupAudio(stream);
-                    setupScene();
-                    animate();
-                })
-                .catch(err => {
-                    console.error('getDisplayMedia error:', err);
-                    alert('无法捕获桌面音频：' + err.message);
-                });
+                .then(stream => { setupAudio(stream); setupScene(); animate(); })
+                .catch(err => alert('无法捕获桌面音频：' + err.message));
         }
 
         main();
